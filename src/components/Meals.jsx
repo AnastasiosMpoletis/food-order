@@ -6,11 +6,11 @@ export default function Meals() {
     const { meals } = use(MealsContext);
 
     return (
-        <div >
+        <div>
             {meals && (
                 <ul id="meals">
                     {meals.map((meal) =>
-                        <li key={meal.id} className="meal-item">
+                        <li key={meal.id} className='meal-item'>
                             <MealItem meal={meal} />
                         </li>
                     )}
