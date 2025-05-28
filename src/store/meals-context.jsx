@@ -98,7 +98,7 @@ export function MealsContextProvider({ children }) {
 
     const contextValue = {
         availableMeals,
-        orderMeals: orderState,
+        orderMeals: orderState.orderMeals,
         addMealToOrder: handleAddMealToOrder,
         updateMealQuantity: handleUpdateMealQuantity,
     };
