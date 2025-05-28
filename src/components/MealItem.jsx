@@ -1,4 +1,9 @@
+import { use } from 'react';
+import { MealsContext } from '../store/meals-context.jsx';
+
 export default function MealItem({ meal: { id, name, price, description, image } }) {
+    const { addMealToOrder } = use(MealsContext);
+
     return (
         <article>
             <header>
@@ -8,7 +13,7 @@ export default function MealItem({ meal: { id, name, price, description, image }
                 <div className="meal-item-description">{description}</div>
             </header>
             <div >
-                <button className="meal-item-actions button">Add to cart</button>
+                <button className="meal-item-actions button" onClick={() => addMealToOrder(id)}>Add to cart</button>
             </div>
         </article>
     );

@@ -1,11 +1,12 @@
 import { createPortal } from "react-dom";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, use } from "react";
+import { MealsContext } from '../store/meals-context.jsx';
 
 export default function CartModal({ modalState, onClose }) {
+    const { updateMealQuantity } = use(MealsContext);
     const dialog = useRef();
 
     useEffect(() => {
-        console.log(modalState);
         if (modalState) {
             dialog.current.showModal();
         } else {
@@ -19,7 +20,7 @@ export default function CartModal({ modalState, onClose }) {
             {/* TODO ANBOL add meals */}
             <div className='modal-actions'>
                 <button className='text-button' onClick={onClose}>Cancel</button>
-                <button className='button'>Go to Checkout</button>
+                <button className='button' onClick={updateMealQuantity}>Go to Checkout</button>
             </div>
         </dialog>, document.getElementById('modal')
     );

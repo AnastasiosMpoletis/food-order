@@ -9,13 +9,13 @@ function App() {
 
   return (
     <>
-      {modalIsOpen && <CartModal modalState={modalIsOpen} onClose={() => setModalIsOpen(false)} />}
-      <Header onCartClick={() => setModalIsOpen(true)} />
-      <main>
-        <MealsContextProvider>
+      <MealsContextProvider>
+        {modalIsOpen && <CartModal modalState={modalIsOpen} onClose={() => setModalIsOpen(false)} />}
+        <Header onCartClick={() => setModalIsOpen(true)} />
+        <main>
           <Meals />
-        </MealsContextProvider>
-      </main>
+        </main>
+      </MealsContextProvider>
     </>
   );
 }
