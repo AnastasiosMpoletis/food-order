@@ -1,10 +1,8 @@
 import { createPortal } from "react-dom";
-import { useRef, useEffect, use } from "react";
+import { useRef, useEffect} from "react";
 import Cart from "./Cart";
-import { MealsContext } from '../store/meals-context.jsx';
 
 export default function CartModal({ modalState, onClose }) {
-    // const { updateMealQuantity } = use(MealsContext);
     const dialog = useRef();
 
     useEffect(() => {

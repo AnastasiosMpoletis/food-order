@@ -62,33 +62,40 @@ export function MealsContextProvider({ children }) {
             };
         }
 
-        // if (action.type === "UPDATE_ITEM") {
-        //     const updatedItems = [...state.items];
-        //     const updatedItemIndex = updatedItems.findIndex(
-        //         (item) => item.id === action.payload.productId
-        //     );
+        if (action.type === "UPDATE_MEAL") {
+            const updatedOrderMeals = [...state.orderMeals];
 
-        //     const updatedItem = {
-        //         ...updatedItems[updatedItemIndex],
-        //     };
+            const existingOrderMealIndex = updatedOrderMeals.findIndex(
+                (orderMeal) => orderMeal.id === action.payload.id
+            );
 
-        //     updatedItem.quantity += action.payload.amount;
+            const updatedOrderMeal = {
+                ...updatedOrderMeals[existingOrderMealIndex],
+            };
 
-        //     if (updatedItem.quantity <= 0) {
-        //         updatedItems.splice(updatedItemIndex, 1);
-        //     } else {
-        //         updatedItems[updatedItemIndex] = updatedItem;
-        //     }
+            updatedOrderMeal.quantity += action.payload.amount;
 
-        //     return {
-        //         ...state,
-        //         items: updatedItems,
-        //     };
-        // }
+            if (updatedOrderMeal.quantity <= 0) {
+                updatedOrderMeals.splice(existingOrderMealIndex, 1);
+            } else {
+                updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
+            }
+
+            return {
+                ...state,
+                orderMeals: updatedOrderMeals,
+            };
+        }
     }
 
-    function handleUpdateMealQuantity() {
-        console.log(orderState);
+    function handleUpdateMealQuantity(id, amount) {
+        orderDispatch({
+            type: "UPDATE_MEAL",
+            payload: {
+                id,
+                amount,
+            }
+        });
     }
 
     const contextValue = {
