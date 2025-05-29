@@ -5,11 +5,17 @@ export const MealsContext = createContext({
     orderMeals: [],
     addMealToOrder: () => { },
     updateMealQuantity: () => { },
+    modalState: {},
+    updateModalState: () => { },
 });
 
 const SAVED_ORDER = "savedOrder";
 
 export function MealsContextProvider({ children }) {
+    const [modalState, setModalState] = useState({
+        isOpen: false,
+        state: null
+    });
     const [availableMeals, setAvailableMeals] = useState();
     const [orderState, orderDispatch] = useReducer(
         orderReducer,
@@ -53,69 +59,72 @@ export function MealsContextProvider({ children }) {
     }
 
     function orderReducer(state, action) {
-        if (action.type === "ADD_MEAL") {
-            const updatedOrderMeals = [...state.orderMeals];
+        switch (action.type) {
 
-            const existingOrderMealIndex = updatedOrderMeals.findIndex(
-                (orderMeal) => orderMeal.id === action.payload
-            );
-            const existingOrderMeal = updatedOrderMeals[existingOrderMealIndex];
+            case "ADD_MEAL": {
+                const updatedOrderMeals = [...state.orderMeals];
 
-            if (existingOrderMeal) {
-                const updatedOrderMeal = {
-                    ...existingOrderMeal,
-                    quantity: existingOrderMeal.quantity + 1,
+                const existingOrderMealIndex = updatedOrderMeals.findIndex(
+                    (orderMeal) => orderMeal.id === action.payload
+                );
+                const existingOrderMeal = updatedOrderMeals[existingOrderMealIndex];
+
+                if (existingOrderMeal) {
+                    const updatedOrderMeal = {
+                        ...existingOrderMeal,
+                        quantity: existingOrderMeal.quantity + 1,
+                    };
+                    updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
+                } else {
+                    const meal = availableMeals.find((meal) => meal.id === action.payload);
+                    updatedOrderMeals.push({
+                        id: action.payload,
+                        name: meal.name,
+                        price: meal.price,
+                        quantity: 1,
+                    });
+                }
+
+                saveOrderToMemory(updatedOrderMeals);
+
+                return {
+                    ...state,
+                    orderMeals: updatedOrderMeals,
                 };
-                updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
-            } else {
-                const meal = availableMeals.find((meal) => meal.id === action.payload);
-                updatedOrderMeals.push({
-                    id: action.payload,
-                    name: meal.name,
-                    price: meal.price,
-                    quantity: 1,
-                });
             }
 
-            saveOrderToMemory(updatedOrderMeals);
+            case "UPDATE_MEAL": {
+                const updatedOrderMeals = [...state.orderMeals];
 
-            return {
-                ...state,
-                orderMeals: updatedOrderMeals,
-            };
-        }
+                const existingOrderMealIndex = updatedOrderMeals.findIndex(
+                    (orderMeal) => orderMeal.id === action.payload.id
+                );
 
-        if (action.type === "UPDATE_MEAL") {
-            const updatedOrderMeals = [...state.orderMeals];
+                const updatedOrderMeal = {
+                    ...updatedOrderMeals[existingOrderMealIndex],
+                };
 
-            const existingOrderMealIndex = updatedOrderMeals.findIndex(
-                (orderMeal) => orderMeal.id === action.payload.id
-            );
+                updatedOrderMeal.quantity += action.payload.amount;
 
-            const updatedOrderMeal = {
-                ...updatedOrderMeals[existingOrderMealIndex],
-            };
+                if (updatedOrderMeal.quantity <= 0) {
+                    updatedOrderMeals.splice(existingOrderMealIndex, 1);
+                } else {
+                    updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
+                }
 
-            updatedOrderMeal.quantity += action.payload.amount;
+                saveOrderToMemory(updatedOrderMeals);
 
-            if (updatedOrderMeal.quantity <= 0) {
-                updatedOrderMeals.splice(existingOrderMealIndex, 1);
-            } else {
-                updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
+                return {
+                    ...state,
+                    orderMeals: updatedOrderMeals,
+                };
             }
 
-            saveOrderToMemory(updatedOrderMeals);
-
-            return {
-                ...state,
-                orderMeals: updatedOrderMeals,
-            };
-        }
-
-        if (action.type === "ADD_ORDER") {
-            return {
-                orderMeals: action.payload
-            };
+            case "ADD_ORDER": {
+                return {
+                    orderMeals: action.payload
+                };
+            }
         }
     }
 
@@ -135,11 +144,17 @@ export function MealsContextProvider({ children }) {
         return JSON.parse(localStorage.getItem(SAVED_ORDER)) || [];
     }
 
+    function updateModalState(isOpen, state) {
+        setModalState({ isOpen, state });
+    }
+
     const contextValue = {
         availableMeals,
         orderMeals: orderState.orderMeals,
         addMealToOrder: handleAddMealToOrder,
         updateMealQuantity: handleUpdateMealQuantity,
+        modalState,
+        updateModalState,
     };
 
     return <MealsContext value={contextValue}>{children}</MealsContext>;
