@@ -7,6 +7,8 @@ export const MealsContext = createContext({
     updateMealQuantity: () => { },
 });
 
+const SAVED_ORDER = "savedOrder";
+
 export function MealsContextProvider({ children }) {
     const [availableMeals, setAvailableMeals] = useState();
     const [orderState, orderDispatch] = useReducer(
@@ -22,12 +24,31 @@ export function MealsContextProvider({ children }) {
         }
 
         loadAvailableMeals();
+        handleAddOrder(loadOrderFromMemory());
+
     }, []);
+
+    function handleAddOrder(order) {
+        orderDispatch({
+            type: "ADD_ORDER",
+            payload: order
+        });
+    }
 
     function handleAddMealToOrder(id) {
         orderDispatch({
             type: "ADD_MEAL",
             payload: id
+        });
+    }
+
+    function handleUpdateMealQuantity(id, amount) {
+        orderDispatch({
+            type: "UPDATE_MEAL",
+            payload: {
+                id,
+                amount,
+            }
         });
     }
 
@@ -56,6 +77,8 @@ export function MealsContextProvider({ children }) {
                 });
             }
 
+            saveOrderToMemory(updatedOrderMeals);
+
             return {
                 ...state,
                 orderMeals: updatedOrderMeals,
@@ -81,21 +104,35 @@ export function MealsContextProvider({ children }) {
                 updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
             }
 
+            saveOrderToMemory(updatedOrderMeals);
+
             return {
                 ...state,
                 orderMeals: updatedOrderMeals,
             };
         }
+
+        if (action.type === "ADD_ORDER") {
+            return {
+                orderMeals: action.payload
+            };
+        }
     }
 
-    function handleUpdateMealQuantity(id, amount) {
-        orderDispatch({
-            type: "UPDATE_MEAL",
-            payload: {
-                id,
-                amount,
-            }
-        });
+    /**
+     * Saves order in progress in browser memory.
+     * 
+     * @param {*} order 
+     */
+    function saveOrderToMemory(order) {
+        localStorage.setItem(SAVED_ORDER, JSON.stringify(order));
+    }
+
+    /**
+     * @returns order saved in browser memory
+     */
+    function loadOrderFromMemory() {
+        return JSON.parse(localStorage.getItem(SAVED_ORDER)) || [];
     }
 
     const contextValue = {
