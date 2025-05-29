@@ -5,6 +5,7 @@ export const MealsContext = createContext({
     orderMeals: [],
     addMealToOrder: () => { },
     updateMealQuantity: () => { },
+    clearOrder: () => { },
     modalState: {},
     updateModalState: () => { },
 });
@@ -38,6 +39,12 @@ export function MealsContextProvider({ children }) {
         orderDispatch({
             type: "ADD_ORDER",
             payload: order
+        });
+    }
+
+    function handleClearOrder() {
+        orderDispatch({
+            type: "CLEAR_ORDER",
         });
     }
 
@@ -125,6 +132,15 @@ export function MealsContextProvider({ children }) {
                     orderMeals: action.payload
                 };
             }
+
+            case "CLEAR_ORDER": {
+                saveOrderToMemory([]);
+                updateModalState(false, null);
+
+                return {
+                    orderMeals: []
+                };
+            }
         }
     }
 
@@ -153,6 +169,7 @@ export function MealsContextProvider({ children }) {
         orderMeals: orderState.orderMeals,
         addMealToOrder: handleAddMealToOrder,
         updateMealQuantity: handleUpdateMealQuantity,
+        clearOrder: handleClearOrder,
         modalState,
         updateModalState,
     };

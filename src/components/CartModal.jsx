@@ -1,7 +1,8 @@
 import { createPortal } from "react-dom";
 import { useRef, useEffect, use } from "react";
 import { MealsContext } from '../store/meals-context.jsx';
-import Cart from "./Cart";
+import Cart from "./Cart.jsx";
+import ClearOrder from "./ClearOrder.jsx";
 
 export default function CartModal() {
     const { modalState, updateModalState } = use(MealsContext);
@@ -17,17 +18,9 @@ export default function CartModal() {
 
     return createPortal(
         <dialog className='modal' ref={dialog}>
-            {modalState && modalState.state === "CART" && (
-                <>
-                    <h2>Your Cart</h2>
-                    <Cart />
-                    <div className='modal-actions'>
-                        <button className='text-button' onClick={() => updateModalState(false, null)}>Cancel</button>
-                        <button className='button' onClick={() => updateModalState(true, "FORM")}>Go to Checkout</button>
-                    </div>
-                </>
-            )}
-            {modalState && modalState.state === "FORM" && (
+            {modalState.state === "CLEAR" && <ClearOrder />}
+            {modalState.state === "CART" && <Cart />}
+            {modalState.state === "FORM" && (
                 <>
                     <button className='text-button' onClick={() => updateModalState(true, "CART")}>Cancel</button>
                 </>
