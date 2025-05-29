@@ -2,13 +2,7 @@ import { use } from "react";
 import { MealsContext } from '../store/meals-context.jsx';
 
 export default function Cart() {
-    const { orderMeals, updateMealQuantity, updateModalState } = use(MealsContext);
-
-    const totalPrice = orderMeals.reduce(
-        (acc, meal) => acc + parseInt(meal.price) * meal.quantity,
-        0
-    );
-    const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
+    const { orderMeals, formattedTotalPrice, updateMealQuantity, updateModalState } = use(MealsContext);
 
     return (
         <>
@@ -68,6 +62,5 @@ export default function Cart() {
                 </button>
             </div >
         </>
-
     );
 }

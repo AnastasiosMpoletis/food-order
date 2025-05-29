@@ -3,6 +3,7 @@ import { createContext, useEffect, useState, useReducer } from "react";
 export const MealsContext = createContext({
     availableMeals: [],
     orderMeals: [],
+    formattedTotalPrice: 0,
     addMealToOrder: () => { },
     updateMealQuantity: () => { },
     clearOrder: () => { },
@@ -164,9 +165,12 @@ export function MealsContextProvider({ children }) {
         setModalState({ isOpen, state });
     }
 
+    const totalPrice = orderState.orderMeals.reduce((acc, meal) => acc + parseInt(meal.price) * meal.quantity, 0);
+
     const contextValue = {
         availableMeals,
         orderMeals: orderState.orderMeals,
+        formattedTotalPrice: `$${totalPrice.toFixed(2)}`,
         addMealToOrder: handleAddMealToOrder,
         updateMealQuantity: handleUpdateMealQuantity,
         clearOrder: handleClearOrder,
