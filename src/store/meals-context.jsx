@@ -29,8 +29,6 @@ export function MealsContextProvider({ children }) {
             type: "ADD_MEAL",
             payload: id
         });
-
-        console.log('Clicked item with id: ' + id);
     }
 
     function orderReducer(state, action) {
@@ -50,7 +48,6 @@ export function MealsContextProvider({ children }) {
                 updatedOrderMeals[existingOrderMealIndex] = updatedOrderMeal;
             } else {
                 const meal = availableMeals.find((meal) => meal.id === action.payload);
-                console.log('Meal: ' + JSON.stringify(meal));
                 updatedOrderMeals.push({
                     id: action.payload,
                     name: meal.name,
@@ -58,8 +55,6 @@ export function MealsContextProvider({ children }) {
                     quantity: 1,
                 });
             }
-
-            console.log('UpdatedItems: ' + updatedOrderMeals);
 
             return {
                 ...state,
