@@ -41,7 +41,7 @@ app.post('/orders', async (req, res) => {
     orderData.customer.city === null ||
     orderData.customer.city.trim() === ''
   ) {
-    return res.status(400).json({
+    return res.status(401).json({
       message:
         'Missing data: Email, name, street, postal code or city is missing.',
     });

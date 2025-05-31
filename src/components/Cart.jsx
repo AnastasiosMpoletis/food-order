@@ -57,7 +57,12 @@ export default function Cart() {
                 <button
                     className='button'
                     onClick={() => updateModalState(true, "FORM")}
-                    disabled={orderMeals.length < 1}>
+                /**
+                 * It would be better to disable the 'Go to Checkout' button if no meals are selected.
+                 * We do not do that in this project, in order to display the response error.
+                 */
+                // disabled={orderMeals.length < 1}
+                >
                     Go to Checkout
                 </button>
             </div >

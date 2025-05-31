@@ -17,7 +17,8 @@ const SAVED_ORDER = "savedOrder";
 export function MealsContextProvider({ children }) {
     const [modalState, setModalState] = useState({
         isOpen: false,
-        state: null
+        state: null,
+        message: null
     });
     const [availableMeals, setAvailableMeals] = useState();
     const [orderState, orderDispatch] = useReducer(
@@ -51,20 +52,19 @@ export function MealsContextProvider({ children }) {
             }
         }
 
-        const response = await fetch('http://localhost:3000/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderToSubmit),
-        });
+        try {
+            const response = await fetch('http://localhost:3000/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderToSubmit),
+            });
 
-        if (!response.ok) {
+            return response;
+        } catch (error) {
             updateModalState(true, "ERROR");
-            return;
         }
-
-        updateModalState(true, "SUCCESS");
     }
 
     function handleAddOrder(order) {
@@ -192,8 +192,8 @@ export function MealsContextProvider({ children }) {
         return JSON.parse(localStorage.getItem(SAVED_ORDER)) || [];
     }
 
-    function updateModalState(isOpen, state) {
-        setModalState({ isOpen, state });
+    function updateModalState(isOpen, state, message) {
+        setModalState({ isOpen, state, message });
     }
 
     const totalPrice = orderState.orderMeals.reduce((acc, meal) => acc + parseInt(meal.price) * meal.quantity, 0);
