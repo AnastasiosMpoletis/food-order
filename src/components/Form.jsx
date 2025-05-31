@@ -3,7 +3,7 @@ import { MealsContext } from '../store/meals-context.jsx';
 import Submit from './Submit.jsx';
 
 export default function Form() {
-    const { formattedTotalPrice, updateModalState } = use(MealsContext);
+    const { formattedTotalPrice, updateModalState, submitOrder } = use(MealsContext);
 
     async function placeOrderAction(previousState, formData) {
         const name = formData.get('name');
@@ -26,7 +26,7 @@ export default function Form() {
             errors.push("Please provide your street.");
         }
 
-        if (postalCode.length !== 5) {
+        if (postalCode.trim().length !== 5) {
             errors.push("Please provide your 5-digit postal code.");
         }
 
@@ -47,7 +47,7 @@ export default function Form() {
             };
         }
 
-        // await addOpinion({ title, body, userName });
+        await submitOrder({ name, email, street, postalCode, city });
 
         return { errors: null };
     }
@@ -65,6 +65,7 @@ export default function Form() {
                         type="text"
                         id="name"
                         name="name"
+                        // defaultValue="Tasos"
                         defaultValue={formState.enteredValues?.name}
                     />
                 </p>
@@ -74,6 +75,7 @@ export default function Form() {
                         type="text"
                         id="email"
                         name="email"
+                        // defaultValue="tasos@boletis.gr"
                         defaultValue={formState.enteredValues?.email}
                     />
                 </p>
@@ -83,6 +85,7 @@ export default function Form() {
                         type="text"
                         id="street"
                         name="street"
+                        // defaultValue="25h Martiou"
                         defaultValue={formState.enteredValues?.street}
                     />
                 </p>
@@ -90,9 +93,10 @@ export default function Form() {
                     <p className="control">
                         <label htmlFor="postal-code">Postal Code</label>
                         <input
-                            type="number"
+                            type="text"
                             id="postal-code"
                             name="postal-code"
+                            // defaultValue="45000"
                             defaultValue={formState.enteredValues?.postalCode}
                         />
                     </p>
@@ -102,6 +106,7 @@ export default function Form() {
                             type="text"
                             id="city"
                             name="city"
+                            // defaultValue="Ioannina"
                             defaultValue={formState.enteredValues?.city}
                         />
                     </p>

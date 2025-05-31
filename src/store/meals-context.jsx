@@ -9,6 +9,7 @@ export const MealsContext = createContext({
     clearOrder: () => { },
     modalState: {},
     updateModalState: () => { },
+    submitOrder: () => { },
 });
 
 const SAVED_ORDER = "savedOrder";
@@ -35,6 +36,36 @@ export function MealsContextProvider({ children }) {
         handleAddOrder(loadOrderFromMemory());
 
     }, []);
+
+    async function submitOrder(enteredUserData) {
+        const orderToSubmit = {
+            order: {
+                items: orderState.orderMeals,
+                customer: {
+                    name: enteredUserData.name,
+                    email: enteredUserData.email,
+                    street: enteredUserData.street,
+                    "postal-code": enteredUserData.postalCode,
+                    city: enteredUserData.city,
+                }
+            }
+        }
+
+        const response = await fetch('http://localhost:3000/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderToSubmit),
+        });
+
+        if (!response.ok) {
+            updateModalState(true, "ERROR");
+            return;
+        }
+
+        updateModalState(true, "SUCCESS");
+    }
 
     function handleAddOrder(order) {
         orderDispatch({
@@ -176,6 +207,7 @@ export function MealsContextProvider({ children }) {
         clearOrder: handleClearOrder,
         modalState,
         updateModalState,
+        submitOrder,
     };
 
     return <MealsContext value={contextValue}>{children}</MealsContext>;
