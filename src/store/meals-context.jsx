@@ -3,6 +3,7 @@ import { createContext, useEffect, useState, useReducer } from "react";
 export const MealsContext = createContext({
     availableMeals: [],
     orderMeals: [],
+    totalMealsQuantity: 0,
     formattedTotalPrice: 0,
     addMealToOrder: () => { },
     updateMealQuantity: () => { },
@@ -10,6 +11,9 @@ export const MealsContext = createContext({
     modalState: {},
     updateModalState: () => { },
     submitOrder: () => { },
+    orders: [],
+    totalOrders: 0,
+    reloadOrders: () => { },
 });
 
 const SAVED_ORDER = "savedOrder";
@@ -25,6 +29,7 @@ export function MealsContextProvider({ children }) {
         orderReducer,
         { orderMeals: [] },
     );
+    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         async function loadAvailableMeals() {
@@ -34,9 +39,18 @@ export function MealsContextProvider({ children }) {
         }
 
         loadAvailableMeals();
+
+        reloadOrders()
+
         handleAddOrder(loadOrderFromMemory());
 
     }, []);
+
+    async function reloadOrders() {
+        const response = await fetch('http://localhost:3000/get-orders');
+        const orders = await response.json();
+        setOrders(orders);
+    }
 
     async function submitOrder(enteredUserData) {
         const orderToSubmit = {
@@ -201,6 +215,7 @@ export function MealsContextProvider({ children }) {
     const contextValue = {
         availableMeals,
         orderMeals: orderState.orderMeals,
+        totalMealsQuantity: orderState.orderMeals.reduce((acc, meal) => acc + meal.quantity, 0),
         formattedTotalPrice: `$${totalPrice.toFixed(2)}`,
         addMealToOrder: handleAddMealToOrder,
         updateMealQuantity: handleUpdateMealQuantity,
@@ -208,6 +223,9 @@ export function MealsContextProvider({ children }) {
         modalState,
         updateModalState,
         submitOrder,
+        orders,
+        totalOrders: orders.length,
+        reloadOrders,
     };
 
     return <MealsContext value={contextValue}>{children}</MealsContext>;

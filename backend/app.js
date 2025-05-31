@@ -20,6 +20,17 @@ app.get('/meals', async (req, res) => {
   res.json(JSON.parse(meals));
 });
 
+// app.get('/get-meal', async (req, res) => {
+//   const availableMeals = await fs.readFile('./data/available-meals.json', 'utf8');
+//   const meal = JSON.parse(availableMeals).find(aMeal => aMeal.id === "m1");
+//   res.json(meal);
+// });
+
+app.get('/get-orders', async (req, res) => {
+  const orders = await fs.readFile('./data/orders.json', 'utf8');
+  res.json(JSON.parse(orders));
+});
+
 app.post('/orders', async (req, res) => {
   const orderData = req.body.order;
 

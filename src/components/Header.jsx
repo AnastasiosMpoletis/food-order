@@ -3,9 +3,7 @@ import { MealsContext } from '../store/meals-context.jsx';
 import logo from '../assets/logo.jpg';
 
 export default function Header() {
-    const { orderMeals, updateModalState } = use(MealsContext);
-
-    const totalQuantity = orderMeals.reduce((acc, meal) => acc + meal.quantity, 0);
+    const { totalMealsQuantity, updateModalState, totalOrders } = use(MealsContext);
 
     return (
         <header id="main-header">
@@ -15,8 +13,13 @@ export default function Header() {
             </div>
             <button
                 className='text-button'
-                onClick={() => updateModalState(true, "CART")}
-            >{`Cart (${totalQuantity})`}
+                onClick={() => updateModalState(true, "ORDERS")}>
+                {`Orders (${totalOrders})`}
+            </button>
+            <button
+                className='text-button'
+                onClick={() => updateModalState(true, "CART")}>
+                {`Cart (${totalMealsQuantity})`}
             </button>
         </header>
     );

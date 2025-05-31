@@ -6,6 +6,7 @@ import Cart from "./Cart.jsx";
 import Form from "./Form.jsx";
 import Success from "./Success.jsx";
 import Error from "./Error.jsx";
+import Orders from "./Orders.jsx";
 
 export default function Modal() {
     const { modalState } = use(MealsContext);
@@ -26,6 +27,7 @@ export default function Modal() {
             {modalState.state === "FORM" && <Form />}
             {modalState.state === "SUCCESS" && <Success />}
             {modalState.state === "ERROR" && <Error />}
+            {modalState.state === "ORDERS" && <Orders />}
         </dialog>, document.getElementById('modal')
     );
 }

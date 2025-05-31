@@ -292,6 +292,24 @@ h1 {
   margin: 0;
 }
 
+.customer-data td {
+  border-bottom: #cecece solid 1px;
+}
+
+.table-value {
+  padding: 0 0.5rem;
+  border-bottom: #cecece solid 1px;
+}
+
+.customer-items {
+  width: 100%;
+}
+
+.table-header-item {
+  text-align: left;
+  padding-bottom: 1rem;
+}
+
 @keyframes fade-slide-up {
   from {
     opacity: 0;
