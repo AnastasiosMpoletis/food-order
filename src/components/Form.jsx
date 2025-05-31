@@ -1,21 +1,71 @@
 import { use, useActionState } from 'react';
 import { MealsContext } from '../store/meals-context.jsx';
+import Submit from './Submit.jsx';
 
 export default function Form() {
     const { formattedTotalPrice, updateModalState } = use(MealsContext);
+
+    async function placeOrderAction(previousState, formData) {
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const street = formData.get('street');
+        const postalCode = formData.get("postal-code");
+        const city = formData.get("city");
+
+        let errors = [];
+
+        if (name.trim().length === 0) {
+            errors.push("Please provide your name.");
+        }
+
+        if (!email.trim().includes("@")) {
+            errors.push("Please provide a valid email.");
+        }
+
+        if (street.trim().length === 0) {
+            errors.push("Please provide your street.");
+        }
+
+        if (postalCode.length !== 5) {
+            errors.push("Please provide your 5-digit postal code.");
+        }
+
+        if (city.trim().length === 0) {
+            errors.push("Please provide your city.");
+        }
+
+        if (errors.length > 0) {
+            return {
+                errors,
+                enteredValues: {
+                    name,
+                    email,
+                    street,
+                    postalCode,
+                    city,
+                }
+            };
+        }
+
+        // await addOpinion({ title, body, userName });
+
+        return { errors: null };
+    }
+
+    const [formState, formAction, pending] = useActionState(placeOrderAction, { errors: null });
 
     return (
         <>
             <h2>Checkout</h2>
             <p>{`Total amount: ${formattedTotalPrice}`}</p>
-            <form action={() => { }}>
+            <form action={formAction}>
                 <p className="control">
                     <label htmlFor="name">Full Name</label>
                     <input
                         type="text"
                         id="name"
                         name="name"
-                    // defaultValue={formState.enteredValues?.userName}
+                        defaultValue={formState.enteredValues?.name}
                     />
                 </p>
                 <p className="control">
@@ -24,7 +74,7 @@ export default function Form() {
                         type="text"
                         id="email"
                         name="email"
-                    // defaultValue={formState.enteredValues?.userName}
+                        defaultValue={formState.enteredValues?.email}
                     />
                 </p>
                 <p className="control">
@@ -33,17 +83,17 @@ export default function Form() {
                         type="text"
                         id="street"
                         name="street"
-                    // defaultValue={formState.enteredValues?.userName}
+                        defaultValue={formState.enteredValues?.street}
                     />
                 </p>
                 <div className="control-row">
                     <p className="control">
                         <label htmlFor="postal-code">Postal Code</label>
                         <input
-                            type="text"
+                            type="number"
                             id="postal-code"
                             name="postal-code"
-                        // defaultValue={formState.enteredValues?.userName}
+                            defaultValue={formState.enteredValues?.postalCode}
                         />
                     </p>
                     <p className="control">
@@ -52,23 +102,30 @@ export default function Form() {
                             type="text"
                             id="city"
                             name="city"
-                        // defaultValue={formState.enteredValues?.userName}
+                            defaultValue={formState.enteredValues?.city}
                         />
                     </p>
                 </div>
-            </form>
 
-            <div className='modal-actions'>
-                <button
-                    className='text-button'
-                    onClick={() => updateModalState(true, "CART")}>
-                    Cancel
-                </button>
-                <button
-                    className='button'>
-                    Sumbit Order
-                </button>
-            </div>
+                {formState.errors && (
+                    <ul className="error">
+                        {formState.errors.map(error => (
+                            <li key={error}>
+                                <p>{error}</p>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                <div className='modal-actions'>
+                    <button
+                        className='text-button'
+                        onClick={() => updateModalState(true, "CART")}>
+                        Cancel
+                    </button>
+                    <Submit />
+                </div>
+            </form >
         </>
     );
 }
