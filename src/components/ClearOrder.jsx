@@ -2,7 +2,7 @@ import { MealsContext } from '../store/meals-context.jsx';
 import { use } from "react";
 
 export default function ClearOrder() {
-    const { clearOrder, updateModalState } = use(MealsContext);
+    const { modalState, updateModalState } = use(MealsContext);
 
     return (
         <>
@@ -15,7 +15,7 @@ export default function ClearOrder() {
                 </button>
                 <button
                     className='text-button'
-                    onClick={clearOrder}>
+                    onClick={modalState.onDeleteOrder}>
                     Yes
                 </button>
             </div>

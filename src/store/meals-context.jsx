@@ -23,7 +23,8 @@ export function MealsContextProvider({ children }) {
     const [modalState, setModalState] = useState({
         isOpen: false,
         state: null,
-        message: null
+        message: null,
+        onDeleteOrder: () => { },
     });
     const [availableMeals, setAvailableMeals] = useState();
     const [orderState, orderDispatch] = useReducer(
@@ -63,6 +64,7 @@ export function MealsContextProvider({ children }) {
         });
         const orders = await response.json();
         setOrders(orders);
+        // updateModalState(true, "ORDERS");
     }
 
     async function submitOrder(enteredUserData) {
@@ -194,7 +196,6 @@ export function MealsContextProvider({ children }) {
 
             case "CLEAR_ORDER": {
                 saveOrderToMemory([]);
-                updateModalState(false, null);
 
                 return {
                     orderMeals: []
@@ -219,8 +220,10 @@ export function MealsContextProvider({ children }) {
         return JSON.parse(localStorage.getItem(SAVED_ORDER)) || [];
     }
 
-    function updateModalState(isOpen, state, message) {
-        setModalState({ isOpen, state, message });
+    function updateModalState(isOpen, state, message, onDeleteOrder) {
+        setModalState({
+            isOpen, state, message, onDeleteOrder,
+        });
     }
 
     const totalPrice = orderState.orderMeals.reduce((acc, meal) => acc + parseInt(meal.price) * meal.quantity, 0);

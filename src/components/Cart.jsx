@@ -2,7 +2,12 @@ import { use } from "react";
 import { MealsContext } from '../store/meals-context.jsx';
 
 export default function Cart() {
-    const { orderMeals, formattedTotalPrice, updateMealQuantity, updateModalState } = use(MealsContext);
+    const { orderMeals, formattedTotalPrice, updateMealQuantity, updateModalState, clearOrder } = use(MealsContext);
+
+    function onClearOrder() {
+        clearOrder();
+        updateModalState(false, null);
+    }
 
     return (
         <>
@@ -45,7 +50,7 @@ export default function Cart() {
             <div className='modal-actions'>
                 <button
                     className='text-clear-button'
-                    onClick={() => updateModalState(true, "CLEAR")}
+                    onClick={() => updateModalState(true, "CLEAR", null, () => onClearOrder())}
                     disabled={orderMeals.length < 1}>
                     Clear
                 </button>

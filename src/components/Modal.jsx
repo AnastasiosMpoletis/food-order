@@ -22,7 +22,7 @@ export default function Modal() {
 
     return createPortal(
         <dialog className='modal' ref={dialog}>
-            {modalState.state === "CLEAR" && <ClearOrder />}
+            {(modalState.state === "CLEAR" || modalState.state === "DELETE") && <ClearOrder />}
             {modalState.state === "CART" && <Cart />}
             {modalState.state === "FORM" && <Form />}
             {modalState.state === "SUCCESS" && <Success />}

@@ -2,7 +2,7 @@ import { use } from 'react';
 import { MealsContext } from '../store/meals-context.jsx';
 
 export default function Success() {
-    const { updateModalState, modalState, clearOrder } = use(MealsContext);
+    const { updateModalState, modalState, clearOrder, reloadOrders } = use(MealsContext);
 
     return (
         <>
@@ -12,6 +12,7 @@ export default function Success() {
                     className='button'
                     onClick={() => {
                         updateModalState(false, null);
+                        reloadOrders();
                         clearOrder();
                     }}>
                     OK

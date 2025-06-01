@@ -3,7 +3,7 @@ import { MealsContext } from '../store/meals-context.jsx';
 import Submit from './Submit.jsx';
 
 export default function Form() {
-    const { formattedTotalPrice, updateModalState, submitOrder, reloadOrders } = use(MealsContext);
+    const { formattedTotalPrice, updateModalState, submitOrder } = use(MealsContext);
 
     async function placeOrderAction(previousState, formData) {
         const name = formData.get('name');
@@ -90,7 +90,6 @@ export default function Form() {
         } else {
             const responseResult = await response.json();
             updateModalState(true, "SUCCESS", responseResult.message);
-            reloadOrders();
         }
 
         return {
