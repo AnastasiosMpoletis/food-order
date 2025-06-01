@@ -4,40 +4,88 @@ import OrderItem from './OrderItem.jsx';
 
 export default function Orders() {
     const { updateModalState, orders, deleteOrder } = use(MealsContext);
-    const [currentOrder, setCurrentOrder] = useState(0);
-
     const totalOrders = orders.length;
+    const [currentOrder, setCurrentOrder] = useState({
+        page: 1,
+        maxPage: totalOrders,
+        current: 0,
+    });
+
     const ordersAreEmpty = totalOrders === 0;
 
-    function handleGoToPreviousOrder() {
-        setCurrentOrder(currentOrder => currentOrder === 0 ? currentOrder : currentOrder - 1);
+    function handleGoToPreviousOrder(onDelete) {
+        setCurrentOrder(currentOrder => {
+            if (currentOrder.page !== 1) {
+                if (!onDelete) {
+                    return {
+                        page: currentOrder.page - 1,
+                        maxPage: currentOrder.maxPage,
+                        current: currentOrder.current - 1,
+                    };
+                } else {
+                    return {
+                        page: currentOrder.page,
+                        maxPage: currentOrder.maxPage - 1,
+                        current: currentOrder.current,
+                    };
+                }
+            } else {
+                if (!onDelete) {
+                    return {
+                        page: 1,
+                        maxPage: currentOrder.maxPage,
+                        current: 0,
+                    };
+                } else {
+                    return {
+                        page: 0,
+                        maxPage: 0,
+                        current: 0,
+                    };
+                }
+            }
+        });
     }
 
     function handleGoToNextOrder() {
-        setCurrentOrder(currentOrder => currentOrder === orders.length - 1 ? currentOrder : currentOrder + 1);
+        if (currentOrder.current + 1 === totalOrders) {
+            return;
+        } else {
+            setCurrentOrder(currentOrder => {
+                const newOrder = {
+                    page: currentOrder.page + 1,
+                    maxPage: totalOrders,
+                    current: currentOrder.current + 1,
+                }
+                return newOrder;
+            });
+        }
     }
 
-    function onDeleteOrder() {
-        deleteOrder(orders[currentOrder].id);
+    async function onDeleteOrder() {
+        await deleteOrder(orders[currentOrder.current].id);
         updateModalState(true, "ORDERS");
-        handleGoToPreviousOrder();
+        handleGoToPreviousOrder(true);
     }
 
-    /**
-     * 
-     * @returns TODO ANBOL fix pagination bug
-     */
-    function getPagination() {
-        return (<span>{` ${currentOrder}/${totalOrders} `}</span>);
+    function createNavigationPages() {
+        if (ordersAreEmpty) {
+            return ` 0/0 `;
+        } else {
+            return ` ${currentOrder.page}/${currentOrder.maxPage} `;
+        }
     }
 
     return (
         <>
             <h2>Your Orders</h2>
+
             {ordersAreEmpty && (
                 <p>No orders available.<br />Add meals to the Cart and proceed to Checkout to create a new Order.</p>
             )}
-            {!ordersAreEmpty && orders[currentOrder] && <OrderItem order={orders[currentOrder]} />}
+            {!ordersAreEmpty && orders[currentOrder.current] &&
+                <OrderItem order={orders[currentOrder.current]} />
+            }
 
             <div className="orders-actions">
                 <button
@@ -47,11 +95,10 @@ export default function Orders() {
                 >Delete Order</button>
                 <div className="navigation">
                     <button
-                        onClick={handleGoToPreviousOrder}
+                        onClick={() => handleGoToPreviousOrder()}
                         disabled={ordersAreEmpty}
                     >{"<"}</button>
-                    {/* <span>{` ${currentOrder + 1}/${totalOrders} `}</span> */}
-                    {getPagination()}
+                    <span>{createNavigationPages()}</span>
                     <button
                         onClick={handleGoToNextOrder}
                         disabled={ordersAreEmpty}

@@ -64,7 +64,6 @@ export function MealsContextProvider({ children }) {
         });
         const orders = await response.json();
         setOrders(orders);
-        // updateModalState(true, "ORDERS");
     }
 
     async function submitOrder(enteredUserData) {
