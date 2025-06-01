@@ -23,6 +23,14 @@ export default function Orders() {
         handleGoToPreviousOrder();
     }
 
+    /**
+     * 
+     * @returns TODO ANBOL fix pagination bug
+     */
+    function getPagination() {
+        return (<span>{` ${currentOrder}/${totalOrders} `}</span>);
+    }
+
     return (
         <>
             <h2>Your Orders</h2>
@@ -42,7 +50,8 @@ export default function Orders() {
                         onClick={handleGoToPreviousOrder}
                         disabled={ordersAreEmpty}
                     >{"<"}</button>
-                    <span>{` ${currentOrder + 1}/${totalOrders} `}</span>
+                    {/* <span>{` ${currentOrder + 1}/${totalOrders} `}</span> */}
+                    {getPagination()}
                     <button
                         onClick={handleGoToNextOrder}
                         disabled={ordersAreEmpty}

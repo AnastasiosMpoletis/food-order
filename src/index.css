@@ -270,6 +270,7 @@ h1 {
   width: 80%;
   max-width: 40rem;
   animation: fade-slide-up 0.3s ease-out forwards;
+  overflow: hidden;
 }
 
 .modal::backdrop {
@@ -298,32 +299,72 @@ h1 {
   margin: 0;
 }
 
-.customer-data td {
-  border-bottom: #cecece solid 1px;
-}
-
-.table-value {
-  padding: 0 0.5rem;
-  border-bottom: #cecece solid 1px;
-}
-
-.customer-items {
-  width: 100%;
+.customer-data {
   border-collapse: collapse;
 }
 
-.customer-items-total {
-  border-top: 2px solid black;
+.customer-data td:nth-child(odd) {
+  padding-right: 2rem;
 }
 
-.customer-items-total td {
-  font-weight: bold;
-  padding: 0.5rem 0;
+.customer-data tr {
+  border-bottom: 1.5px solid #e49124;
 }
 
-.table-header-item {
-  text-align: left;
+.customer-items-container {
+  height: 20vh;
+  overflow-y: auto;
   padding-bottom: 1rem;
+}
+
+.customer-items {
+  width: 35rem;
+  border-collapse: collapse;
+  border-style: hidden;
+}
+
+.customer-items thead {
+  background-color: #e4ddd4;
+}
+
+.customer-items td:nth-child(1),
+th:nth-child(1) {
+  width: 50%;
+  text-align: left;
+}
+
+.customer-items td:nth-child(2),
+th:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+
+.customer-items td:nth-child(3),
+th:nth-child(3) {
+  width: 15%;
+  text-align: left;
+}
+
+.customer-items td:nth-child(4),
+th:nth-child(4) {
+  width: 15%;
+  text-align: left;
+}
+
+.customer-items tr {
+  border-bottom: 1px solid black;
+}
+
+.customer-items .customer-items-header {
+  position: sticky;
+  top: 0;
+  border-style: hidden;
+}
+
+.customer-items-total {
+  position: fixed;
+  bottom: 3rem;
+  border-top: 1px solid black;
 }
 
 .navigation button {

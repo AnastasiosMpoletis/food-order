@@ -8,62 +8,69 @@ export default function OrderItem({ order }) {
                 <tbody>
                     <tr>
                         <td>Order Id</td>
-                        <td className="table-value">{order.id}</td>
+                        <td>{order.id}</td>
                     </tr>
                     <tr>
                         <td>Full Name</td>
-                        <td className="table-value">{order.customer.name}</td>
+                        <td>{order.customer.name}</td>
                     </tr>
                     <tr>
                         <td>E-Mail Address</td>
-                        <td className="table-value">{order.customer.email}</td>
+                        <td>{order.customer.email}</td>
                     </tr>
                     <tr>
                         <td>Street</td>
-                        <td className="table-value">{order.customer.street}</td>
+                        <td>{order.customer.street}</td>
                     </tr>
                     <tr>
                         <td>Postal Code</td>
-                        <td className="table-value">{order.customer["postal-code"]}</td>
+                        <td>{order.customer["postal-code"]}</td>
                     </tr>
                     <tr>
                         <td>City</td>
-                        <td className="table-value">{order.customer.city}</td>
+                        <td>{order.customer.city}</td>
                     </tr>
                 </tbody>
             </table>
 
             <hr />
 
-            <table className="customer-items">
+            <div className="customer-items-container">
+                <table className="customer-items">
+                    <thead className="customer-items-header">
+                        <tr>
+                            <th>Meal</th>
+                            <th>Quantity</th>
+                            <th>Item Price</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {order.items.map(item => {
+                            const totalItemPrice = (item.price * item.quantity).toFixed(2);
+
+                            return (
+                                <tr key={item.id}>
+                                    <td>{item.name}</td>
+                                    <td>{item.quantity}</td>
+                                    <td>{`$${item.price}`}</td>
+                                    <td>{`$${totalItemPrice}`}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+            </div>
+
+            <table className="customer-items customer-items-total">
                 <thead>
                     <tr>
-                        <th className="table-header-item">Meal</th>
-                        <th className="table-header-item">Quantity</th>
-                        <th className="table-header-item">Item Price</th>
-                        <th className="table-header-item">Price</th>
+                        <th>Total</th>
+                        <th>{totalOrderQuantities}</th>
+                        <th></th>
+                        <th>{`$${totalOrderPrice}`}</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {order.items.map(item => {
-                        const totalItemPrice = (item.price * item.quantity).toFixed(2);
-
-                        return (
-                            <tr key={item.id}>
-                                <td>{item.name}</td>
-                                <td>{item.quantity}</td>
-                                <td>{`$${item.price}`}</td>
-                                <td>{`$${totalItemPrice}`}</td>
-                            </tr>
-                        )
-                    })}
-                    <tr className="customer-items-total">
-                        <td>Total</td>
-                        <td>{totalOrderQuantities}</td>
-                        <td></td>
-                        <td>{`$${totalOrderPrice}`}</td>
-                    </tr>
-                </tbody>
             </table>
         </article>
     );
