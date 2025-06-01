@@ -7,8 +7,13 @@ export default function Orders() {
 
     return (
         <>
-            {/* //TODO ANBOL when there are no orders, display something */}
-            {orders.length !== 0 && <OrderItem order={orders[1]} />}
+            {orders.length === 0 && (
+                <>
+                    <h2>No orders available</h2>
+                    <p>Add meals to the Cart and proceed to Checkout to create a new Order.</p>
+                </>
+            )}
+            {orders.length !== 0 && <OrderItem order={orders[0]} />}
             <div className="modal-actions">
                 <button
                     className='text-button'

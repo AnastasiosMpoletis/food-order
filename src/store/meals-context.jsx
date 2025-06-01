@@ -14,6 +14,7 @@ export const MealsContext = createContext({
     orders: [],
     totalOrders: 0,
     reloadOrders: () => { },
+    deleteOrder: () => { },
 });
 
 const SAVED_ORDER = "savedOrder";
@@ -48,6 +49,18 @@ export function MealsContextProvider({ children }) {
 
     async function reloadOrders() {
         const response = await fetch('http://localhost:3000/get-orders');
+        const orders = await response.json();
+        setOrders(orders);
+    }
+
+    async function deleteOrder(orderId) {
+        const response = await fetch('http://localhost:3000/delete-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId }),
+        });
         const orders = await response.json();
         setOrders(orders);
     }
@@ -226,6 +239,7 @@ export function MealsContextProvider({ children }) {
         orders,
         totalOrders: orders.length,
         reloadOrders,
+        deleteOrder,
     };
 
     return <MealsContext value={contextValue}>{children}</MealsContext>;

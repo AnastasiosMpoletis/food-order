@@ -28,7 +28,15 @@ app.get('/meals', async (req, res) => {
 
 app.get('/get-orders', async (req, res) => {
   const orders = await fs.readFile('./data/orders.json', 'utf8');
-  res.json(JSON.parse(orders));
+  res.status(202).json(JSON.parse(orders));
+});
+
+app.post('/delete-order', async (req, res) => {
+  const orders = await fs.readFile('./data/orders.json', 'utf8');
+  let allOrders = JSON.parse(orders);
+  allOrders = allOrders.filter(item => item.id !== req.body.orderId);
+  await fs.writeFile('./data/orders.json', JSON.stringify(allOrders));
+  res.status(203).json(allOrders);
 });
 
 app.post('/orders', async (req, res) => {

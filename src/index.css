@@ -303,6 +303,16 @@ h1 {
 
 .customer-items {
   width: 100%;
+  border-collapse: collapse;
+}
+
+.customer-items-total {
+  border-top: 2px solid black;
+}
+
+.customer-items-total td {
+  font-weight: bold;
+  padding: 0.5rem 0;
 }
 
 .table-header-item {

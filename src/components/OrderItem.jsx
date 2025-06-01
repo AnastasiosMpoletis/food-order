@@ -1,6 +1,15 @@
+import { use } from 'react';
+import { MealsContext } from '../store/meals-context.jsx';
+
 export default function OrderItem({ order }) {
+    const { deleteOrder } = use(MealsContext);
+
+    let totalOrderQuantities = order.items.reduce((sum, item) => sum + item.quantity, 0);
+    let totalOrderPrice = order.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
+
     return (
         <article>
+            <button onClick={() => deleteOrder(order.id)}>Delete Order</button>
             <h2>Customer</h2>
             <table className="customer-data">
                 <tbody>
@@ -42,6 +51,7 @@ export default function OrderItem({ order }) {
                 <tbody>
                     {order.items.map(item => {
                         const totalItemPrice = (item.price * item.quantity).toFixed(2);
+
                         return (
                             <tr key={item.id}>
                                 <td>{item.name}</td>
@@ -51,6 +61,12 @@ export default function OrderItem({ order }) {
                             </tr>
                         )
                     })}
+                    <tr className="customer-items-total">
+                        <td>Total</td>
+                        <td>{totalOrderQuantities}</td>
+                        <td></td>
+                        <td>{`$${totalOrderPrice}`}</td>
+                    </tr>
                 </tbody>
             </table>
         </article>
