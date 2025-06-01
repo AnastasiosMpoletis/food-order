@@ -8,7 +8,7 @@ export default function Cart() {
         <>
             <div className='cart'>
                 <h2>Your Cart</h2>
-                {orderMeals.length === 0 && <p>No Meals ordered</p>}
+                {orderMeals.length === 0 && <p>No Meals in Cart</p>}
                 {orderMeals.length > 0 && (
                     <ul>
                         {orderMeals.map(orderMeal => {

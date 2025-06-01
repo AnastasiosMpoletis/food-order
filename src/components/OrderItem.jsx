@@ -1,24 +1,21 @@
-import { use } from 'react';
-import { MealsContext } from '../store/meals-context.jsx';
-
 export default function OrderItem({ order }) {
-    const { deleteOrder } = use(MealsContext);
-
     let totalOrderQuantities = order.items.reduce((sum, item) => sum + item.quantity, 0);
     let totalOrderPrice = order.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
 
     return (
         <article>
-            <button onClick={() => deleteOrder(order.id)}>Delete Order</button>
-            <h2>Customer</h2>
             <table className="customer-data">
                 <tbody>
                     <tr>
-                        <td>Full Name </td>
+                        <td>Order Id</td>
+                        <td className="table-value">{order.id}</td>
+                    </tr>
+                    <tr>
+                        <td>Full Name</td>
                         <td className="table-value">{order.customer.name}</td>
                     </tr>
                     <tr>
-                        <td>E-Mail Address </td>
+                        <td>E-Mail Address</td>
                         <td className="table-value">{order.customer.email}</td>
                     </tr>
                     <tr>
@@ -26,11 +23,11 @@ export default function OrderItem({ order }) {
                         <td className="table-value">{order.customer.street}</td>
                     </tr>
                     <tr>
-                        <td>Postal Code </td>
+                        <td>Postal Code</td>
                         <td className="table-value">{order.customer["postal-code"]}</td>
                     </tr>
                     <tr>
-                        <td>City </td>
+                        <td>City</td>
                         <td className="table-value">{order.customer.city}</td>
                     </tr>
                 </tbody>
@@ -38,7 +35,6 @@ export default function OrderItem({ order }) {
 
             <hr />
 
-            <h2>Order</h2>
             <table className="customer-items">
                 <thead>
                     <tr>

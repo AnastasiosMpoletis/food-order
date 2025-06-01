@@ -11,16 +11,18 @@ export default function Header() {
                 <img src={logo} alt="Scyscrapers across a plate." />
                 <h1>ReactFood</h1>
             </div>
-            <button
-                className='text-button'
-                onClick={() => updateModalState(true, "ORDERS")}>
-                {`Orders (${totalOrders})`}
-            </button>
-            <button
-                className='text-button'
-                onClick={() => updateModalState(true, "CART")}>
-                {`Cart (${totalMealsQuantity})`}
-            </button>
+            <div>
+                <button
+                    className='text-button'
+                    onClick={() => updateModalState(true, "ORDERS")}>
+                    {`Orders (${totalOrders})`}
+                </button>
+                <button
+                    className='text-button'
+                    onClick={() => updateModalState(true, "CART")}>
+                    {`Cart (${totalMealsQuantity})`}
+                </button>
+            </div>
         </header>
     );
 }
