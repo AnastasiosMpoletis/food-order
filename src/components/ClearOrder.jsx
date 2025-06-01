@@ -10,13 +10,13 @@ export default function ClearOrder() {
             <div className='modal-actions'>
                 <button
                     className='button'
-                    onClick={() => updateModalState(true, "CART")}>
-                    No
+                    onClick={() => updateModalState(true, "CART")}
+                >No
                 </button>
                 <button
                     className='text-button'
-                    onClick={modalState.onDeleteOrder}>
-                    Yes
+                    onClick={modalState.onDeleteOrder}
+                >Yes
                 </button>
             </div>
         </>

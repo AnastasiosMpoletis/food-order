@@ -47,30 +47,32 @@ export default function Cart() {
                 </p>
             </div>
 
-            <div className='modal-actions'>
+            <div className="orders-actions">
                 <button
                     className='text-clear-button'
                     onClick={() => updateModalState(true, "CLEAR", null, () => onClearOrder())}
-                    disabled={orderMeals.length < 1}>
-                    Clear
+                    disabled={orderMeals.length < 1}
+                >Clear Order
                 </button>
-                <button
-                    className='text-button'
-                    onClick={() => updateModalState(false, null)}>
-                    Cancel
-                </button>
-                <button
-                    className='button'
-                    onClick={() => updateModalState(true, "FORM")}
-                /**
-                 * It would be better to disable the 'Go to Checkout' button if no meals are selected.
-                 * We do not do that in this project, in order to display the response error.
-                 */
-                // disabled={orderMeals.length < 1}
-                >
-                    Go to Checkout
-                </button>
-            </div >
+                <div className='modal-actions'>
+                    <button
+                        className='text-button'
+                        onClick={() => updateModalState(false, null)}
+                    >Cancel
+                    </button>
+                    <button
+                        className='button'
+                        onClick={() => updateModalState(true, "FORM")}
+                    /**
+                     * It would be better to disable the 'Go to Checkout' button if no meals are selected.
+                     * We do not do that in this project, in order to display the response error.
+                     */
+                    // disabled={orderMeals.length < 1}
+                    >Go to Checkout
+                    </button>
+                </div >
+            </div>
+
         </>
     );
 }

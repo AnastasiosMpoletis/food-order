@@ -5,7 +5,9 @@ import OrderItem from './OrderItem.jsx';
 export default function Orders() {
     const { updateModalState, orders, deleteOrder } = use(MealsContext);
     const [currentOrder, setCurrentOrder] = useState(0);
-    const ordersAreEmpty = orders.length === 0;
+
+    const totalOrders = orders.length;
+    const ordersAreEmpty = totalOrders === 0;
 
     function handleGoToPreviousOrder() {
         setCurrentOrder(currentOrder => currentOrder === 0 ? currentOrder : currentOrder - 1);
@@ -28,28 +30,31 @@ export default function Orders() {
                 <p>No orders available.<br />Add meals to the Cart and proceed to Checkout to create a new Order.</p>
             )}
             {!ordersAreEmpty && orders[currentOrder] && <OrderItem order={orders[currentOrder]} />}
-            <div className="modal-actions">
-                <button
-                    onClick={handleGoToPreviousOrder}
-                    disabled={ordersAreEmpty}
-                >
-                    Previous</button>
-                <button
-                    onClick={handleGoToNextOrder}
-                    disabled={ordersAreEmpty}
-                >
-                    Next</button>
+
+            <div className="orders-actions">
                 <button
                     className="text-clear-button"
                     onClick={() => updateModalState(true, "DELETE", null, () => onDeleteOrder())}
                     disabled={ordersAreEmpty}
-                >
-                    Delete Order</button>
-                <button
-                    className='text-button'
-                    onClick={() => updateModalState(false, null)}>
-                    Cancel
-                </button>
+                >Delete Order</button>
+                <div className="navigation">
+                    <button
+                        onClick={handleGoToPreviousOrder}
+                        disabled={ordersAreEmpty}
+                    >{"<"}</button>
+                    <span>{` ${currentOrder + 1}/${totalOrders} `}</span>
+                    <button
+                        onClick={handleGoToNextOrder}
+                        disabled={ordersAreEmpty}
+                    >{">"}</button>
+                </div>
+                <div className="modal-actions">
+                    <button
+                        className='text-button'
+                        onClick={() => updateModalState(false, null)}>
+                        Cancel
+                    </button>
+                </div>
             </div>
         </>
     );
