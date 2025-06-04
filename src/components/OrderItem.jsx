@@ -1,4 +1,4 @@
-export default function OrderItem({ order }) {
+export default function OrderItem({ order, scrollTableRef }) {
     let totalOrderQuantities = order.items.reduce((sum, item) => sum + item.quantity, 0);
     let totalOrderPrice = order.items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toFixed(2);
 
@@ -35,7 +35,7 @@ export default function OrderItem({ order }) {
 
             <hr />
 
-            <div className="customer-items-container">
+            <div className="customer-items-container" ref={scrollTableRef}>
                 <table className="customer-items">
                     <thead className="customer-items-header">
                         <tr>

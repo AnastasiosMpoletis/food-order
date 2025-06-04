@@ -1,8 +1,9 @@
-import { use, useState } from 'react';
+import { use, useState, useRef } from 'react';
 import { MealsContext } from '../store/meals-context.jsx';
 import OrderItem from './OrderItem.jsx';
 
 export default function Orders() {
+    const scrollTableRef = useRef();
     const { updateModalState, orders, deleteOrder } = use(MealsContext);
     const totalOrders = orders.length;
     const [currentOrder, setCurrentOrder] = useState({
@@ -45,6 +46,8 @@ export default function Orders() {
                 }
             }
         });
+
+        handleScrollTableToTop();
     }
 
     function handleGoToNextOrder() {
@@ -60,6 +63,7 @@ export default function Orders() {
                 return newOrder;
             });
         }
+        handleScrollTableToTop();
     }
 
     async function onDeleteOrder() {
@@ -76,6 +80,11 @@ export default function Orders() {
         }
     }
 
+    function handleScrollTableToTop() {
+        scrollTableRef.current.scrollTo({ top: 0, left: 0, behaviour: "auto" });
+        // scrollTableRef.current.scrollTop = 0;
+    }
+
     return (
         <>
             <h2>Your Orders</h2>
@@ -84,7 +93,7 @@ export default function Orders() {
                 <p>No orders available.<br />Add meals to the Cart and proceed to Checkout to create a new Order.</p>
             )}
             {!ordersAreEmpty && orders[currentOrder.current] &&
-                <OrderItem order={orders[currentOrder.current]} />
+                <OrderItem order={orders[currentOrder.current]} scrollTableRef={scrollTableRef} />
             }
 
             <div className="orders-actions">

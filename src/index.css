@@ -315,6 +315,27 @@ h1 {
   height: 20vh;
   overflow-y: auto;
   padding-bottom: 1rem;
+  scroll-behavior: smooth;
+  /* Fixes problem with scrollbar pixels? */
+  scrollbar-gutter: stable;
+}
+
+.customer-items-container::-webkit-scrollbar {
+  width: 7px;
+}
+
+.customer-items-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+.customer-items-container::-webkit-scrollbar-thumb {
+  background: #585757;
+  border-radius: 5px;
+}
+
+.customer-items-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .customer-items {
