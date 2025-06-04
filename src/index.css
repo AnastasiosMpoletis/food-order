@@ -18,7 +18,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3rem 10%;
+  padding: 0.5rem 10%;
+  position: sticky;
+  top: 0;
+  background: rgb(29, 26, 22, 0.9);
 }
 
 #main-header #title {
