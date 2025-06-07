@@ -118,8 +118,7 @@ export default function Form() {
                         id="name"
                         name="name"
                         required
-                        // defaultValue={formState.enteredValues?.name}
-                        defaultValue="Tasos"
+                        defaultValue={formState.enteredValues?.name}
                     />
                 </p>
                 <p className="control">
@@ -129,8 +128,7 @@ export default function Form() {
                         id="email"
                         name="email"
                         required
-                        // defaultValue={formState.enteredValues?.email}
-                        defaultValue="tasos@boletis.com"
+                        defaultValue={formState.enteredValues?.email}
                     />
                 </p>
                 <p className="control">
@@ -140,8 +138,7 @@ export default function Form() {
                         id="street"
                         name="street"
                         required
-                        // defaultValue={formState.enteredValues?.street}
-                        defaultValue="Street"
+                        defaultValue={formState.enteredValues?.street}
                     />
                 </p>
                 <div className="control-row">
@@ -152,8 +149,7 @@ export default function Form() {
                             id="postal-code"
                             name="postal-code"
                             required
-                            // defaultValue={formState.enteredValues?.postalCode}
-                            defaultValue="45000"
+                            defaultValue={formState.enteredValues?.postalCode}
                         />
                     </p>
                     <p className="control">
@@ -163,8 +159,7 @@ export default function Form() {
                             id="city"
                             name="city"
                             required
-                            // defaultValue={formState.enteredValues?.city}
-                            defaultValue="City"
+                            defaultValue={formState.enteredValues?.city}
                         />
                     </p>
                 </div>

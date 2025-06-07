@@ -9,7 +9,7 @@ import Error from "./Error.jsx";
 import Orders from "./Orders.jsx";
 
 export default function Modal() {
-    const { modalState } = use(MealsContext);
+    const { modalState, updateModalState, clearOrder, reloadOrders } = use(MealsContext);
     const dialog = useRef();
 
     useEffect(() => {
@@ -20,13 +20,25 @@ export default function Modal() {
         }
     }, [modalState]);
 
+    function handleOnClose() {
+        if (modalState.state === "SUCCESS") {
+            onSuccessClose();
+        }
+    }
+
+    function onSuccessClose() {
+        updateModalState(false, null);
+        reloadOrders();
+        clearOrder();
+    }
+
     return createPortal(
-        <dialog className='modal' ref={dialog}>
+        <dialog className='modal' ref={dialog} onClose={handleOnClose}>
             {(modalState.state === "CLEAR" || modalState.state === "DELETE") && <ClearOrder />}
             {modalState.state === "CART" && <Cart />}
             {modalState.state === "FORM" && <Form />}
-            {modalState.state === "SUCCESS" && <Success />}
             {modalState.state === "ERROR" && <Error />}
+            {modalState.state === "SUCCESS" && <Success modalState={modalState} onSuccess={onSuccessClose} />}
             {modalState.state === "ORDERS" && <Orders />}
         </dialog>, document.getElementById('modal')
     );
