@@ -117,16 +117,20 @@ export default function Form() {
                         type="text"
                         id="name"
                         name="name"
-                        defaultValue={formState.enteredValues?.name}
+                        required
+                        // defaultValue={formState.enteredValues?.name}
+                        defaultValue="Tasos"
                     />
                 </p>
                 <p className="control">
                     <label htmlFor="email">E-Mail Address</label>
                     <input
-                        type="text"
+                        type="email"
                         id="email"
                         name="email"
-                        defaultValue={formState.enteredValues?.email}
+                        required
+                        // defaultValue={formState.enteredValues?.email}
+                        defaultValue="tasos@boletis.com"
                     />
                 </p>
                 <p className="control">
@@ -135,7 +139,9 @@ export default function Form() {
                         type="text"
                         id="street"
                         name="street"
-                        defaultValue={formState.enteredValues?.street}
+                        required
+                        // defaultValue={formState.enteredValues?.street}
+                        defaultValue="Street"
                     />
                 </p>
                 <div className="control-row">
@@ -145,7 +151,9 @@ export default function Form() {
                             type="text"
                             id="postal-code"
                             name="postal-code"
-                            defaultValue={formState.enteredValues?.postalCode}
+                            required
+                            // defaultValue={formState.enteredValues?.postalCode}
+                            defaultValue="45000"
                         />
                     </p>
                     <p className="control">
@@ -154,7 +162,9 @@ export default function Form() {
                             type="text"
                             id="city"
                             name="city"
-                            defaultValue={formState.enteredValues?.city}
+                            required
+                            // defaultValue={formState.enteredValues?.city}
+                            defaultValue="City"
                         />
                     </p>
                 </div>

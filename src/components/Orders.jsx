@@ -4,8 +4,7 @@ import OrderItem from './OrderItem.jsx';
 
 export default function Orders() {
     const scrollTableRef = useRef();
-    const { updateModalState, orders, deleteOrder } = use(MealsContext);
-    const totalOrders = orders.length;
+    const { updateModalState, orders, deleteOrder, totalOrders } = use(MealsContext);
     const [currentOrder, setCurrentOrder] = useState({
         page: 1,
         maxPage: totalOrders,
@@ -81,8 +80,10 @@ export default function Orders() {
     }
 
     function handleScrollTableToTop() {
-        scrollTableRef.current.scrollTo({ top: 0, left: 0, behaviour: "auto" });
-        // scrollTableRef.current.scrollTop = 0;
+        if (scrollTableRef.current != null) {
+            scrollTableRef.current.scrollTo({ top: 0, left: 0, behaviour: "auto" });
+            // scrollTableRef.current.scrollTop = 0;
+        }
     }
 
     return (
