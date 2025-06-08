@@ -16,7 +16,7 @@ export default function Meals() {
                     )}
                 </ul>
             )}
-            {!availableMeals && <p>No meals</p>}
+            {!availableMeals && <p className="center">Fetching meals...</p>}
         </div>
     );
 }
