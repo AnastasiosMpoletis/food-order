@@ -1,6 +1,5 @@
 import { use, useActionState } from 'react';
 import { MealsContext } from '../store/meals-context.jsx';
-import Submit from './Submit.jsx';
 
 export default function Form() {
     const { formattedTotalPrice, updateModalState, submitOrder } = use(MealsContext);
@@ -167,12 +166,19 @@ export default function Form() {
                 {formState.error && <div className="error">{formState.error}</div>}
 
                 <div className='modal-actions'>
-                    <button
-                        className='text-button'
-                        onClick={() => updateModalState(true, "CART")}>
-                        Cancel
-                    </button>
-                    <Submit />
+                    {pending && <p>Submitting your order...</p>}
+                    {!pending && (
+                        <>
+                            <button
+                                className='text-button'
+                                onClick={() => updateModalState(true, "CART")}>
+                                Cancel
+                            </button>
+                            <button type="submit" className="button">
+                                Submit Order
+                            </button>
+                        </>
+                    )}
                 </div>
             </form >
         </>
